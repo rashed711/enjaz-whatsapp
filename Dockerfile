@@ -29,18 +29,9 @@ RUN apt-get update && apt-get install -y \
     libcairo2 \
     && rm -rf /var/lib/apt/lists/*
 
-# Set work directory
 WORKDIR /app
-
-# Copy package.json first
 COPY package*.json ./
 RUN npm install
-
-# Copy rest of the files
 COPY . .
-
-# Expose port
 EXPOSE 3000
-
-# Run app
 CMD ["npm", "start"]
