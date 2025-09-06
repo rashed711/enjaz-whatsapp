@@ -1,5 +1,5 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
-const qrcode = require('qrcode-terminal');
+const qrcode = require('qrcode');
 const express = require('express');
 
 const app = express();
@@ -12,9 +12,12 @@ const client = new Client({
 
 // Show QR Code
 client.on('qr', qr => {
-    console.log('Scan this QR code:');
-    qrcode.generate(qr, { small: true });
+    qrcode.toFile('qr.png', qr, { width: 300 }, (err) => {
+        if (err) throw err;
+        console.log('✅ QR code saved as qr.png');
+    });
 });
+
 
 // Log when ready
 client.on('ready', () => {
