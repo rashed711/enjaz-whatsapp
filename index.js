@@ -11,26 +11,22 @@ const client = new Client({
   puppeteer: { headless: true }
 });
 
-// QR Code أول مرة
 client.on("qr", qr => {
-  console.log("Scan this QR code to log in:");
+  console.log("Scan this QR code:");
   qrcode.generate(qr, { small: true });
 });
 
-// Logged in
 client.on("ready", () => {
   console.log("✅ WhatsApp bot is ready!");
 });
 
-// استقبال رسائل
 client.on("message", msg => {
   console.log(`📩 Message from ${msg.from}: ${msg.body}`);
   if (msg.body.toLowerCase() === "hi") {
-    msg.reply("Hello! This is your WhatsApp bot.");
+    msg.reply("Hello! WhatsApp bot here 🚀");
   }
 });
 
-// API لإرسال رسالة
 app.post("/send", async (req, res) => {
   const { number, message } = req.body;
   if (!number || !message) return res.status(400).send("Missing number or message");
@@ -44,5 +40,5 @@ app.post("/send", async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log("Server running on port 3000"));
+app.listen(3000, () => console.log("🌐 Server running on port 3000"));
 client.initialize();
