@@ -1,6 +1,7 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode');
 const express = require('express');
+const fs = require('fs');
 
 const app = express();
 app.use(express.json());
@@ -10,7 +11,7 @@ const client = new Client({
     puppeteer: { headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] }
 });
 
-// Show QR Code
+// Generate QR code as image
 client.on('qr', qr => {
     qrcode.toFile('qr.png', qr, { width: 300 }, (err) => {
         if (err) throw err;
@@ -18,8 +19,7 @@ client.on('qr', qr => {
     });
 });
 
-
-// Log when ready
+// Ready event
 client.on('ready', () => {
     console.log('✅ WhatsApp client is ready!');
 });
@@ -32,7 +32,7 @@ client.on('message', message => {
     }
 });
 
-// API endpoint to send messages
+// Send message API
 app.post('/send', async (req, res) => {
     const { number, message } = req.body;
     if (!number || !message) return res.status(400).send('Number and message required');
@@ -46,7 +46,7 @@ app.post('/send', async (req, res) => {
     }
 });
 
-// Start Express server
+// Start server
 app.listen(3000, () => console.log('🌐 Server running on port 3000'));
 
 client.initialize();
